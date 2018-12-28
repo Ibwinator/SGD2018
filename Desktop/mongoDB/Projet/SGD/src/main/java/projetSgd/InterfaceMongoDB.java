@@ -29,6 +29,7 @@ import static com.mongodb.client.model.Updates.*;
 import com.mongodb.client.result.UpdateResult;
 import java.util.ArrayList;
 import java.util.List;
+import com.mongodb.DBCursor;
 
 /**
  *
@@ -39,17 +40,23 @@ public class InterfaceMongoDB {
     
     public InterfaceMongoDB(){
         char[] pwd=new char[10];
-       String s="bj852910";
+       String s="sc364347";
        pwd=s.toCharArray();
-       MongoCredential cred = MongoCredential.createCredential("bj852910","bj852910",pwd);
-       MongoClient client=new MongoClient(new ServerAddress("mongo",27017),Arrays.asList(cred));
-       db = client.getDatabase("bj852910");
+       MongoCredential cred = MongoCredential.createCredential("sc364347","sc364347",pwd);
+       MongoClient client=new MongoClient(new ServerAddress("127.0.0.1",27017),Arrays.asList(cred));
+       db = client.getDatabase("sc364347");
     }
     
     public void test(){
-        MongoCollection<Document> collection = db.getCollection("Jeux");
-        Document doc=collection.find(eq("Nomjeu","bob")).first();
-        System.out.println(doc.toJson());
+        MongoCollection<Document> collection = db.getCollection("jeux");
+        MongoCursor<Document> cursor=collection.find().iterator();
+        try{
+            while((cursor.hasNext())){
+                System.out.println(cursor.next().toJson());
+            }
+        }finally{
+            cursor.close();
+        }
     }
     
     public static void main(String args[]){
