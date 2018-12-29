@@ -13,7 +13,7 @@ import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Filters;
 import com.mongodb.Block;
-
+import static com.mongodb.client.model.Projections.*;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 
@@ -21,6 +21,7 @@ import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import java.util.Arrays;
 import com.mongodb.Block;
+import org.json.*;
 
 import com.mongodb.client.MongoCursor;
 import static com.mongodb.client.model.Filters.*;
@@ -59,9 +60,23 @@ public class InterfaceMongoDB {
         }
     }
     
+    public int connexion(String username,String mdp){
+        MongoCollection<Document> collection = db.getCollection("joueurs");
+        MongoCursor<Document> cursor=collection.find(and(eq("Pseudo",username),eq("mdp",mdp))).projection(fields(include("power"),excludeId())).iterator();
+        try{
+            while((cursor.hasNext())){
+                JSONObject obj=new JSONObject(cursor.next().toJson());
+                return (int)Double.parseDouble(obj.get("power").toString());
+            }
+        }finally{
+            cursor.close();
+        }
+        return -1;
+    }
+    
     public static void main(String args[]){
         InterfaceMongoDB i1=new InterfaceMongoDB();
-        i1.test();
+        System.out.println(i1.connexion("Cariefdss","azer"));
     }
     
 }
