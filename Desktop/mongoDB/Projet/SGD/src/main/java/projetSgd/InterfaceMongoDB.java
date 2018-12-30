@@ -60,6 +60,21 @@ public class InterfaceMongoDB {
         }
     }
     
+    public void addGame(String name,String year,String type,String editor,String serie,String descri){
+        MongoCollection<Document> collection = db.getCollection("jeux");
+        int num=(int)collection.count()+1;
+        Document doc = new Document("Numjeu", num)
+                .append("Nomjeu", name);
+        if(!serie.equals("")){
+            doc.append("serie", serie);
+        }
+        doc.append("annéedesortie", Integer.parseInt(year))
+                .append("types", type)
+                .append("Editeur", editor)
+                .append("dispo","true");
+        collection.insertOne(doc);
+    }
+    
     public int connexion(String username,String mdp){
         MongoCollection<Document> collection = db.getCollection("joueurs");
         MongoCursor<Document> cursor=collection.find(and(eq("Pseudo",username),eq("mdp",mdp))).projection(fields(include("power"),excludeId())).iterator();
@@ -73,10 +88,6 @@ public class InterfaceMongoDB {
         }
         return -1;
     }
-    
-    public static void main(String args[]){
-        InterfaceMongoDB i1=new InterfaceMongoDB();
-        System.out.println(i1.connexion("Cariefdss","azer"));
-    }
+
     
 }

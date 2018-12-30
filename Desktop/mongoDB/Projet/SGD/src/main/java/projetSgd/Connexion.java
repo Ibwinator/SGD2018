@@ -5,6 +5,7 @@
  */
 package projetSgd;
 import javax.swing.JOptionPane;
+import com.placeholder.PlaceHolder;
 /**
  *
  * @author scotte
@@ -18,6 +19,7 @@ public class Connexion extends javax.swing.JFrame {
     public Connexion() {
         initComponents();
         inter=new InterfaceMongoDB();
+        PlaceHolder holder = new PlaceHolder(username,"Nom d'utilisateur");
     }
 
     /**
@@ -35,9 +37,13 @@ public class Connexion extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        pwdField.setText("jPasswordField1");
+        pwdField.setText("dsqjhdls");
+        pwdField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                pwdFieldFocusGained(evt);
+            }
+        });
 
-        username.setText("Nom d'utilisateur");
         username.setToolTipText("");
 
         connexionButton.setText("Connexion");
@@ -93,6 +99,11 @@ public class Connexion extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_connexionButtonActionPerformed
+
+    private void pwdFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pwdFieldFocusGained
+        // TODO add your handling code here:
+        pwdField.setText("");
+    }//GEN-LAST:event_pwdFieldFocusGained
 
     /**
      * @param args the command line arguments
