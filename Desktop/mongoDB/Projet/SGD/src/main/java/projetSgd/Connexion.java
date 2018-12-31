@@ -36,6 +36,7 @@ public class Connexion extends javax.swing.JFrame {
         connexionButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Authentification");
 
         pwdField.setText("dsqjhdls");
         pwdField.addFocusListener(new java.awt.event.FocusAdapter() {

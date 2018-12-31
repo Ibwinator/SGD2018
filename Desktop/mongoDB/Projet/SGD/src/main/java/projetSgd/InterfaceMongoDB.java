@@ -31,7 +31,7 @@ import com.mongodb.client.result.UpdateResult;
 import java.util.ArrayList;
 import java.util.List;
 import com.mongodb.DBCursor;
-
+import javax.swing.DefaultListModel;
 /**
  *
  * @author sc364347
@@ -65,13 +65,22 @@ public class InterfaceMongoDB {
         int num=(int)collection.count()+1;
         Document doc = new Document("Numjeu", num)
                 .append("Nomjeu", name);
-        if(!serie.equals("")){
+        if(!serie.equals("Serie de jeu associée")&& !serie.equals("")){
             doc.append("serie", serie);
         }
         doc.append("annéedesortie", Integer.parseInt(year))
                 .append("types", type)
                 .append("Editeur", editor)
                 .append("dispo","true");
+        collection.insertOne(doc);
+    }
+    
+     public void addSerie(String name,String year,String descri,String[] gameList){
+        MongoCollection<Document> collection = db.getCollection("series");
+        Document doc = new Document("Nom", name)
+                .append("Creation", Integer.parseInt(year))
+                .append("Description", descri)
+                .append("Jeux",Arrays.asList(gameList));
         collection.insertOne(doc);
     }
     
