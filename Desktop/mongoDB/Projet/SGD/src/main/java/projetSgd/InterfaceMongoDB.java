@@ -17,7 +17,7 @@ import static com.mongodb.client.model.Projections.*;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 
-
+import org.bson.conversions.Bson;
 import org.bson.Document;
 import java.util.Arrays;
 import com.mongodb.Block;
@@ -71,6 +71,7 @@ public class InterfaceMongoDB {
         doc.append("annéedesortie", Integer.parseInt(year))
                 .append("types", type)
                 .append("Editeur", editor)
+                .append("descriptif", descri)
                 .append("dispo","true");
         collection.insertOne(doc);
     }
@@ -83,10 +84,56 @@ public class InterfaceMongoDB {
                 .append("Jeux",Arrays.asList(gameList));
         collection.insertOne(doc);
     }
+     
+    public ArrayList<JSONObject> searchGame(String name,String serie,String year,String type,String editor){
+        MongoCollection<Document> collection = db.getCollection("jeux");
+        ArrayList<JSONObject> list=new ArrayList<JSONObject>();
+        Bson b=and(gt("Numjeu",0));
+        if(!name.equals("") && !name.equals("Nom du jeu")){
+            b=and(b,eq("Nomjeu",name));
+        }
+        if(!serie.equals("") && !serie.equals("Serie de jeu associée")){
+            b=and(b,eq("Série",serie));
+        }
+        if(!year.equals("") && !year.equals("Année du jeu")){
+            b=and(b,eq("annéedesortie",Integer.parseInt(year)));
+        }
+        if(!type.equals("") && !type.equals("Type")){
+            b=and(b,eq("types",type));
+        }
+        if(!editor.equals("") && !editor.equals("Editeur")){
+            b=and(b,eq("Editeur",type));
+        }
+        MongoCursor<Document> cursor=collection.find(b).iterator();
+        try{
+            while((cursor.hasNext())){
+                JSONObject obj=new JSONObject(cursor.next().toJson());
+                list.add(obj);
+            }
+        }finally{
+            cursor.close();
+        }
+        return list;
+    }
+    
+    public String getDescriptionGame(String name){
+        MongoCollection<Document> collection = db.getCollection("jeux");
+        MongoCursor<Document> cursor=collection.find(eq("Nomjeu",name)).projection(fields(include("descriptif"),excludeId())).iterator();
+        try{
+            while((cursor.hasNext())){
+                JSONObject obj=new JSONObject(cursor.next().toJson());
+                return obj.get("descriptif").toString();
+            }
+        }finally{
+            cursor.close();
+        }
+        return "";
+    }
     
     public int connexion(String username,String mdp){
         MongoCollection<Document> collection = db.getCollection("joueurs");
-        MongoCursor<Document> cursor=collection.find(and(eq("Pseudo",username),eq("mdp",mdp))).projection(fields(include("power"),excludeId())).iterator();
+        Bson b=and(eq("Pseudo",username));
+        MongoCursor<Document> cursor=collection.find(and(b,eq("mdp",mdp))).projection(fields(include("power"),excludeId())).iterator();
         try{
             while((cursor.hasNext())){
                 JSONObject obj=new JSONObject(cursor.next().toJson());

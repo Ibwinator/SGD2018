@@ -7,6 +7,9 @@ package projetSgd;
 import com.placeholder.PlaceHolder;
 import javax.swing.JOptionPane;
 import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import org.json.*;
 /**
  *
  * @author sc364347
@@ -14,12 +17,16 @@ import javax.swing.DefaultListModel;
 public class Affichage extends javax.swing.JFrame {
     private InterfaceMongoDB inter;
     private DefaultListModel listModel;
+    private String username;
     /**
      * Creates new form Affichage
      */
-    public Affichage(int type,InterfaceMongoDB i) {
+    public Affichage(String str,int type,InterfaceMongoDB i) {
         initComponents();
         inter=i;
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setWrapStyleWord(true);
+        username=str;
         if(type == 1 ){
             jTabbedPane2.remove(addGame);
             jTabbedPane2.remove(stats);
@@ -101,8 +108,6 @@ public class Affichage extends javax.swing.JFrame {
         serieSearch = new javax.swing.JTextField();
         yearSearch = new javax.swing.JTextField();
         searchGame = new javax.swing.JButton();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
         editorSearch = new javax.swing.JTextField();
         jScrollPane6 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -111,6 +116,8 @@ public class Affichage extends javax.swing.JFrame {
         jList1 = new javax.swing.JList<>();
         jLabel5 = new javax.swing.JLabel();
         borrowButton = new javax.swing.JButton();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
         RatingPanel = new javax.swing.JPanel();
 
         jScrollPane1.setViewportView(jEditorPane1);
@@ -197,7 +204,7 @@ public class Affichage extends javax.swing.JFrame {
                 .addComponent(descriGame, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(addGameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(185, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Ajouter un jeu", null, addGame, "dsds");
@@ -278,7 +285,7 @@ public class Affichage extends javax.swing.JFrame {
                     .addComponent(removeList))
                 .addGap(18, 18, 18)
                 .addComponent(addSerieButton)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(176, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Ajouter une serie", addSerie);
@@ -291,7 +298,7 @@ public class Affichage extends javax.swing.JFrame {
         );
         statsLayout.setVerticalGroup(
             statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 470, Short.MAX_VALUE)
+            .addGap(0, 548, Short.MAX_VALUE)
         );
 
         jTabbedPane2.addTab("Statistiques", stats);
@@ -299,17 +306,11 @@ public class Affichage extends javax.swing.JFrame {
         jLabel3.setText("Recherche de jeu");
 
         searchGame.setText("Rechercher");
-
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Nom", "Serie associée", "Année de sortie","Type de jeu","Editeur","Disponible",
+        searchGame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchGameActionPerformed(evt);
             }
-        ));
-        jTable3.setColumnSelectionAllowed(true);
-        jScrollPane5.setViewportView(jTable3);
+        });
 
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
@@ -323,6 +324,21 @@ public class Affichage extends javax.swing.JFrame {
         jLabel5.setText("Avis laissé");
 
         borrowButton.setText("Emprunter");
+
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+            },
+            new String [] {
+                "Nom du jeu", "Serie", "Année", "Type" , "Editeur" ,"Disponible"
+            }
+        ));
+        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable3MouseClicked(evt);
+            }
+        });
+        jScrollPane8.setViewportView(jTable3);
 
         javax.swing.GroupLayout searchGamePanelLayout = new javax.swing.GroupLayout(searchGamePanel);
         searchGamePanel.setLayout(searchGamePanelLayout);
@@ -345,7 +361,7 @@ public class Affichage extends javax.swing.JFrame {
                     .addGroup(searchGamePanelLayout.createSequentialGroup()
                         .addGap(259, 259, 259)
                         .addComponent(borrowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(295, Short.MAX_VALUE))
             .addGroup(searchGamePanelLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addGroup(searchGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,15 +370,15 @@ public class Affichage extends javax.swing.JFrame {
                             .addComponent(nameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(serieSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(yearSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
                         .addGroup(searchGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(searchGame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(editorSearch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(typeSearch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(typeSearch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(59, 59, 59))
                     .addGroup(searchGamePanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(searchGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -392,13 +408,10 @@ public class Affichage extends javax.swing.JFrame {
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
+                .addGap(4, 4, 4)
                 .addGroup(searchGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(searchGamePanelLayout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))
-                    .addGroup(searchGamePanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE))
                 .addGap(8, 8, 8)
                 .addComponent(borrowButton)
                 .addContainerGap())
@@ -414,7 +427,7 @@ public class Affichage extends javax.swing.JFrame {
         );
         RatingPanelLayout.setVerticalGroup(
             RatingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 470, Short.MAX_VALUE)
+            .addGap(0, 548, Short.MAX_VALUE)
         );
 
         jTabbedPane2.addTab("Laisser un avis sur jeu ou une serie", RatingPanel);
@@ -495,6 +508,53 @@ public class Affichage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addSerieButtonActionPerformed
 
+    
+    private void searchGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGameActionPerformed
+        // TODO add your handling code here:
+        String name=nameSearch.getText();
+        String year=yearSearch.getText();
+        String serie=serieSearch.getText();
+        String editor=editorSearch.getText();
+        String type=typeSearch.getText();
+        jTextArea1.setText("");
+        try{
+            if(!year.equals("") && !year.equals("Année du jeu")){
+                Integer.parseInt(year);
+            }
+            ArrayList<JSONObject> list=inter.searchGame(name, serie, year, type, editor);
+            DefaultTableModel model =(DefaultTableModel) jTable3.getModel();
+            model.setRowCount(0);
+            for(JSONObject obj : list){
+               if(obj.has("Série")){
+                  model.addRow(new Object[]{obj.get("Nomjeu"),obj.get("Série"),obj.get("annéedesortie"),obj.get("types"),obj.get("Editeur"),obj.get("dispo")});
+               }
+               else{
+                   model.addRow(new Object[]{obj.get("Nomjeu"),"Sans série",obj.get("annéedesortie"),obj.get("types"),obj.get("Editeur"),obj.get("dispo")});
+               }
+               
+               
+            }
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null,"Année incorrecte");
+        }
+        
+        
+        
+    }//GEN-LAST:event_searchGameActionPerformed
+
+    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+        // TODO add your handling code here:
+        int i=jTable3.getSelectedRow();
+        DefaultTableModel model =(DefaultTableModel) jTable3.getModel();
+        if(i!=-1){
+            String name=(String)model.getValueAt(i, 0);
+            jTextArea1.setText(inter.getDescriptionGame(name));
+        }
+        else{
+            jTextArea1.setText("");
+        }
+    }//GEN-LAST:event_jTable3MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel RatingPanel;
@@ -521,9 +581,9 @@ public class Affichage extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;

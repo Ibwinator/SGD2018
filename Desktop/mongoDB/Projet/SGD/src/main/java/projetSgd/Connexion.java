@@ -92,7 +92,7 @@ public class Connexion extends javax.swing.JFrame {
         int type=inter.connexion(user, pwd);
         if( type != -1) {
            this.setVisible(false);
-           Affichage a=new Affichage(type,inter);
+           Affichage a=new Affichage(user,type,inter);
            a.setVisible(true);
         }
         else{
