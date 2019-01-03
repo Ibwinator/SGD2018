@@ -130,6 +130,44 @@ public class InterfaceMongoDB {
         return "";
     }
     
+    public void insertRating(String type,String name,String note,String player,String descri){
+        MongoCollection<Document> collection = db.getCollection("avis");
+        Document doc = new Document("Playername",player);
+        if(type.equals("serie")){
+            doc.append("Nomserie", name);
+        }
+        else{
+            doc.append("Nomjeu",name);
+        }
+        doc.append("Note", Double.parseDouble(note))
+           .append("Descriptif", descri);
+        collection.insertOne(doc);
+        
+    }
+    
+    public ArrayList<JSONObject> getRating(String name,String type){
+         MongoCollection<Document> collection = db.getCollection("avis");
+         ArrayList<JSONObject> list=new ArrayList<JSONObject>();
+         Bson b=eq("","");
+         if(type.equals("jeu")){
+            b=eq("Nomjeu",name);
+         }
+         else{
+             b=eq("Nomserie",name);
+         }
+         MongoCursor<Document> cursor = collection.find(b).iterator();
+         try{
+            while((cursor.hasNext())){
+                JSONObject o=new JSONObject(cursor.next().toJson());
+                list.add(o);
+            }
+        }finally{
+            cursor.close();
+        }
+        return list;
+        
+    }
+    
     public int connexion(String username,String mdp){
         MongoCollection<Document> collection = db.getCollection("joueurs");
         Bson b=and(eq("Pseudo",username));
