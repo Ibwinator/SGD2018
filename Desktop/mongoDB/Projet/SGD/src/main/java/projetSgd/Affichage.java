@@ -54,6 +54,10 @@ public class Affichage extends javax.swing.JFrame {
         
         PlaceHolder holder16 = new PlaceHolder( nameRating , "Nom du jeu ou de la serie");
         
+        PlaceHolder holder17 = new PlaceHolder(nameSearchSerie, "Nom de la série");
+        PlaceHolder holder18 = new PlaceHolder(yearSearchSerie, "Année de création de la serie");
+        PlaceHolder holder19 = new PlaceHolder(gameSearchSerie, "Jeu appartenant à la série");
+        
         listModel = new DefaultListModel();
         listGameSerie.setModel(listModel);
     }
@@ -135,7 +139,21 @@ public class Affichage extends javax.swing.JFrame {
         sendRating = new javax.swing.JButton();
         searchSerie = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        nameSearchSerie = new javax.swing.JTextField();
+        yearSearchSerie = new javax.swing.JTextField();
+        gameSearchSerie = new javax.swing.JTextField();
+        searchSerieButton = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTable4 = new javax.swing.JTable();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        jTextArea3 = new javax.swing.JTextArea();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
 
         jScrollPane1.setViewportView(jEditorPane1);
 
@@ -167,6 +185,11 @@ public class Affichage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Médiathèque");
+        setMaximumSize(new java.awt.Dimension(921, 733));
+        setMinimumSize(new java.awt.Dimension(921, 733));
+
+        jTabbedPane2.setMaximumSize(new java.awt.Dimension(921, 733));
+        jTabbedPane2.setMinimumSize(new java.awt.Dimension(921, 733));
 
         addGameButton.setText("Ajouter");
         addGameButton.addActionListener(new java.awt.event.ActionListener() {
@@ -221,7 +244,7 @@ public class Affichage extends javax.swing.JFrame {
                 .addComponent(descriGame, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(addGameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(195, Short.MAX_VALUE))
+                .addContainerGap(325, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Ajouter un jeu", null, addGame, "dsds");
@@ -302,7 +325,7 @@ public class Affichage extends javax.swing.JFrame {
                     .addComponent(removeList))
                 .addGap(18, 18, 18)
                 .addComponent(addSerieButton)
-                .addContainerGap(186, Short.MAX_VALUE))
+                .addContainerGap(316, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Ajouter une serie", addSerie);
@@ -315,7 +338,7 @@ public class Affichage extends javax.swing.JFrame {
         );
         statsLayout.setVerticalGroup(
             statsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 558, Short.MAX_VALUE)
+            .addGap(0, 688, Short.MAX_VALUE)
         );
 
         jTabbedPane2.addTab("Statistiques", stats);
@@ -395,14 +418,13 @@ public class Affichage extends javax.swing.JFrame {
                     .addComponent(jScrollPane9))
                 .addGap(21, 21, 21))
             .addGroup(searchGamePanelLayout.createSequentialGroup()
-                .addGroup(searchGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(searchGamePanelLayout.createSequentialGroup()
-                        .addGap(253, 253, 253)
-                        .addComponent(jLabel3))
-                    .addGroup(searchGamePanelLayout.createSequentialGroup()
-                        .addGap(274, 274, 274)
-                        .addComponent(borrowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(253, 253, 253)
+                .addComponent(jLabel3)
+                .addContainerGap(541, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchGamePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(borrowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(272, 272, 272))
         );
         searchGamePanelLayout.setVerticalGroup(
             searchGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -432,9 +454,9 @@ public class Affichage extends javax.swing.JFrame {
                 .addGroup(searchGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(borrowButton)
-                .addGap(14, 14, 14))
+                .addContainerGap(162, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Rechercher/Emprunter un jeu ", searchGamePanel);
@@ -513,37 +535,114 @@ public class Affichage extends javax.swing.JFrame {
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(sendRating)
-                .addContainerGap(128, Short.MAX_VALUE))
+                .addContainerGap(258, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Laisser un avis sur jeu ou une serie", RatingPanel);
 
-        jLabel8.setText("Recherche une serie");
+        jLabel8.setText("Rechercher une série");
 
-        jTextField1.setText("jTextField1");
+        gameSearchSerie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gameSearchSerieActionPerformed(evt);
+            }
+        });
+
+        searchSerieButton.setText("Rechercher la série");
+        searchSerieButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchSerieButtonActionPerformed(evt);
+            }
+        });
+
+        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {null,null},
+            new String [] {
+                "Nom", "Année de création"
+            }
+        ));
+        jScrollPane7.setViewportView(jTable4);
+
+        jScrollPane10.setViewportView(jList1);
+
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jScrollPane11.setViewportView(jTextArea2);
+
+        jTextArea3.setColumns(20);
+        jTextArea3.setRows(5);
+        jScrollPane12.setViewportView(jTextArea3);
+
+        jLabel9.setText("Description");
+
+        jLabel10.setText("Jeux de la série");
+
+        jLabel11.setText("Avis sur la série");
 
         javax.swing.GroupLayout searchSerieLayout = new javax.swing.GroupLayout(searchSerie);
         searchSerie.setLayout(searchSerieLayout);
         searchSerieLayout.setHorizontalGroup(
             searchSerieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(searchSerieLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(searchSerieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(yearSearchSerie, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                    .addComponent(nameSearchSerie)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(40, 40, 40)
+                .addGroup(searchSerieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane10)
+                    .addComponent(gameSearchSerie)
+                    .addComponent(searchSerieButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
                 .addGroup(searchSerieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(searchSerieLayout.createSequentialGroup()
-                        .addGap(376, 376, 376)
-                        .addComponent(jLabel8))
-                    .addGroup(searchSerieLayout.createSequentialGroup()
-                        .addGap(67, 67, 67)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(395, Short.MAX_VALUE))
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchSerieLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(searchSerieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchSerieLayout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addGap(85, 85, 85))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchSerieLayout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addGap(225, 225, 225)
+                        .addComponent(jLabel11)
+                        .addGap(65, 65, 65))))
+            .addGroup(searchSerieLayout.createSequentialGroup()
+                .addGap(366, 366, 366)
+                .addComponent(jLabel8)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         searchSerieLayout.setVerticalGroup(
             searchSerieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(searchSerieLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(23, 23, 23)
                 .addComponent(jLabel8)
-                .addGap(75, 75, 75)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(427, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(searchSerieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(searchSerieLayout.createSequentialGroup()
+                        .addGroup(searchSerieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nameSearchSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(gameSearchSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(33, 33, 33)
+                        .addGroup(searchSerieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(yearSearchSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchSerieButton)))
+                    .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(searchSerieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(searchSerieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane11)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap(182, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Rechercher une serie", searchSerie);
@@ -707,6 +806,25 @@ public class Affichage extends javax.swing.JFrame {
         
     }//GEN-LAST:event_sendRatingActionPerformed
 
+    private void gameSearchSerieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameSearchSerieActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_gameSearchSerieActionPerformed
+
+    private void searchSerieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSerieButtonActionPerformed
+        // TODO add your handling code here:
+        String name=nameSearchSerie.getText();
+        String year=yearSearchSerie.getText();
+        String game=gameSearchSerie.getText();
+        try{
+            if(!year.equals("") && !year.equals("Année de création")){
+                Integer.parseInt(year);
+                
+            }
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null,"Année de création incorrecte");
+        }
+    }//GEN-LAST:event_searchSerieButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel RatingPanel;
@@ -724,8 +842,11 @@ public class Affichage extends javax.swing.JFrame {
     private javax.swing.JTextField descriSerie;
     private javax.swing.JTextField editorGame;
     private javax.swing.JTextField editorSearch;
+    private javax.swing.JTextField gameSearchSerie;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -733,24 +854,33 @@ public class Affichage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
+    private javax.swing.JTable jTable4;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextArea jTextArea3;
     private javax.swing.JList<String> listGameSerie;
     private javax.swing.JTextField nameGame;
     private javax.swing.JTextField nameRating;
     private javax.swing.JTextField nameSearch;
+    private javax.swing.JTextField nameSearchSerie;
     private javax.swing.JRadioButton radio1;
     private javax.swing.JRadioButton radio2;
     private javax.swing.JTextArea ratingArea;
@@ -759,6 +889,7 @@ public class Affichage extends javax.swing.JFrame {
     private javax.swing.JButton searchGame;
     private javax.swing.JPanel searchGamePanel;
     private javax.swing.JPanel searchSerie;
+    private javax.swing.JButton searchSerieButton;
     private javax.swing.JButton sendRating;
     private javax.swing.JTextField serieGame;
     private javax.swing.JTextField serieName;
@@ -768,5 +899,6 @@ public class Affichage extends javax.swing.JFrame {
     private javax.swing.JTextField typeSearch;
     private javax.swing.JTextField yearGame;
     private javax.swing.JTextField yearSearch;
+    private javax.swing.JTextField yearSearchSerie;
     // End of variables declaration//GEN-END:variables
 }
