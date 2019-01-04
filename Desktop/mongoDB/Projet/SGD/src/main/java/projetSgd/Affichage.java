@@ -6,6 +6,7 @@
 package projetSgd;
 import com.placeholder.PlaceHolder;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
@@ -28,6 +29,10 @@ public class Affichage extends javax.swing.JFrame {
         jTextArea1.setWrapStyleWord(true);
         ratingArea.setLineWrap(true);
         ratingArea.setWrapStyleWord(true);
+        descriSearchSerie.setLineWrap(true);
+        descriSearchSerie.setWrapStyleWord(true);
+        ratingSerie.setLineWrap(true);
+        ratingSerie.setWrapStyleWord(true);
         username=str;
         if(type == 1 ){
             jTabbedPane2.remove(addGame);
@@ -146,11 +151,11 @@ public class Affichage extends javax.swing.JFrame {
         jScrollPane7 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
         jScrollPane10 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        gameSerie = new javax.swing.JList<>();
         jScrollPane11 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        ratingSerie = new javax.swing.JTextArea();
         jScrollPane12 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
+        descriSearchSerie = new javax.swing.JTextArea();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -561,17 +566,24 @@ public class Affichage extends javax.swing.JFrame {
                 "Nom", "Année de création"
             }
         ));
+        jTable4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable4MouseClicked(evt);
+            }
+        });
         jScrollPane7.setViewportView(jTable4);
 
-        jScrollPane10.setViewportView(jList1);
+        jScrollPane10.setViewportView(gameSerie);
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane11.setViewportView(jTextArea2);
+        ratingSerie.setEditable(false);
+        ratingSerie.setColumns(20);
+        ratingSerie.setRows(5);
+        jScrollPane11.setViewportView(ratingSerie);
 
-        jTextArea3.setColumns(20);
-        jTextArea3.setRows(5);
-        jScrollPane12.setViewportView(jTextArea3);
+        descriSearchSerie.setEditable(false);
+        descriSearchSerie.setColumns(20);
+        descriSearchSerie.setRows(5);
+        jScrollPane12.setViewportView(descriSearchSerie);
 
         jLabel9.setText("Description");
 
@@ -761,13 +773,13 @@ public class Affichage extends javax.swing.JFrame {
         
     }//GEN-LAST:event_searchGameActionPerformed
 
-    private void parseRatings(ArrayList<JSONObject> list){
-        ratingArea.setText("");
+    private void parseRatings(ArrayList<JSONObject> list,JTextArea ta){
+        ta.setText("");
         for(JSONObject obj : list){
             String str="Avis du joueur : "+obj.get("Playername")+"\n";
             str+="Note : "+obj.get("Note")+"\n";
             str+="Commentaire du joueur : "+obj.get("Descriptif")+"\n\n"; 
-            ratingArea.append(str);
+            ta.append(str);
         }
     }
     
@@ -778,7 +790,7 @@ public class Affichage extends javax.swing.JFrame {
         if(i!=-1){
             String name=(String)model.getValueAt(i, 0);
             jTextArea1.setText(inter.getDescriptionGame(name));
-            parseRatings(inter.getRating(name, "jeu"));
+            parseRatings(inter.getRating(name, "jeu"),ratingArea);
         }
         else{
             jTextArea1.setText("");
@@ -816,14 +828,48 @@ public class Affichage extends javax.swing.JFrame {
         String year=yearSearchSerie.getText();
         String game=gameSearchSerie.getText();
         try{
-            if(!year.equals("") && !year.equals("Année de création")){
+            if(!year.equals("") && !year.equals("Année de création de la serie")){
                 Integer.parseInt(year);
-                
             }
+                ArrayList<JSONObject> list=inter.searchSerie(name, year, game);
+                DefaultTableModel model =(DefaultTableModel) jTable4.getModel();
+                model.setRowCount(0);
+                if (list.size()>0){
+                    for(JSONObject obj : list){
+                        model.addRow(new Object[]{obj.get("Nom"),obj.get("Creation")}); 
+                    } 
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"Aucun résultat pour la recherche");
+                }
         }catch(NumberFormatException e){
             JOptionPane.showMessageDialog(null,"Année de création incorrecte");
         }
     }//GEN-LAST:event_searchSerieButtonActionPerformed
+    
+    private void addToGameList(ArrayList<JSONObject> list){
+        DefaultListModel dlm = new DefaultListModel();
+        dlm.setSize(0);
+        descriSearchSerie.setText((String)list.get(0).get("Description"));
+        for (JSONObject obj : list){
+            dlm.addElement(obj.get("Jeux"));
+        }
+        gameSerie.setModel(dlm);
+    }
+    
+    private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable4MouseClicked
+        // TODO add your handling code here:
+        int i=jTable4.getSelectedRow();
+        DefaultTableModel model =(DefaultTableModel) jTable4.getModel();
+        if(i!=-1){
+            String name=(String)model.getValueAt(i, 0);
+            addToGameList(inter.getSerieGame(name));
+            parseRatings(inter.getRating(name, "Serie"),ratingSerie);
+        }
+        else{
+            descriSearchSerie.setText("");
+        }
+    }//GEN-LAST:event_jTable4MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -839,10 +885,12 @@ public class Affichage extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboNote;
     private javax.swing.JTextField creationSerie;
     private javax.swing.JTextField descriGame;
+    private javax.swing.JTextArea descriSearchSerie;
     private javax.swing.JTextField descriSerie;
     private javax.swing.JTextField editorGame;
     private javax.swing.JTextField editorSearch;
     private javax.swing.JTextField gameSearchSerie;
+    private javax.swing.JList<String> gameSerie;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -855,7 +903,6 @@ public class Affichage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
@@ -874,8 +921,6 @@ public class Affichage extends javax.swing.JFrame {
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextArea jTextArea3;
     private javax.swing.JList<String> listGameSerie;
     private javax.swing.JTextField nameGame;
     private javax.swing.JTextField nameRating;
@@ -885,6 +930,7 @@ public class Affichage extends javax.swing.JFrame {
     private javax.swing.JRadioButton radio2;
     private javax.swing.JTextArea ratingArea;
     private javax.swing.JTextArea ratingDescri;
+    private javax.swing.JTextArea ratingSerie;
     private javax.swing.JButton removeList;
     private javax.swing.JButton searchGame;
     private javax.swing.JPanel searchGamePanel;

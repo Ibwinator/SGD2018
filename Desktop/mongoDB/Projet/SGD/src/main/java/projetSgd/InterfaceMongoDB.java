@@ -167,6 +167,53 @@ public class InterfaceMongoDB {
         return list;
         
     }
+    public ArrayList<JSONObject> getSerieGame(String name){
+         MongoCollection<Document> collection = db.getCollection("series");
+         ArrayList<JSONObject> list=new ArrayList<JSONObject>();
+         MongoCursor<Document> cursor = collection.aggregate(
+            Arrays.asList(
+                  Aggregates.unwind("$Jeux"),
+                  Aggregates.match(eq("Nom",name))
+            )     
+         ).iterator();
+         try{
+            while((cursor.hasNext())){
+                JSONObject o=new JSONObject(cursor.next().toJson());
+                list.add(o);
+            }
+        }finally{
+            cursor.close();
+        }
+        return list;
+        
+    }
+    
+    
+    
+    public ArrayList<JSONObject> searchSerie(String name,String year,String game){
+        MongoCollection<Document> collection = db.getCollection("series");
+        ArrayList<JSONObject> list=new ArrayList<JSONObject>();
+        Bson b=gt("Creation",0);
+        if(!name.equals("") && !name.equals("Nom de la série")){
+            b=and(b,eq("Nom",name));
+        }
+        if(!year.equals("") && !year.equals("Année de création de la serie")){
+            b=and(b,eq("Creation",year));
+        }
+        if(!game.equals("") && !game.equals("Jeu appartenant à la série")){
+            b=and(b,in("Jeux",game));
+        }
+        MongoCursor<Document> cursor=collection.find(b).iterator();
+        try{
+            while((cursor.hasNext())){
+                JSONObject obj=new JSONObject(cursor.next().toJson());
+                list.add(obj);
+            }
+        }finally{
+            cursor.close();
+        }
+        return list;
+    }
     
     public int connexion(String username,String mdp){
         MongoCollection<Document> collection = db.getCollection("joueurs");
