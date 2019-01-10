@@ -20,6 +20,7 @@ public class Connexion extends javax.swing.JFrame {
         initComponents();
         inter=new InterfaceMongoDB();
         PlaceHolder holder = new PlaceHolder(username,"Nom d'utilisateur");
+        
     }
 
     /**
@@ -137,6 +138,7 @@ public class Connexion extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Connexion().setVisible(true);
+                
             }
         });
     }

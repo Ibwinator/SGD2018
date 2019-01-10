@@ -361,8 +361,8 @@
         <Container class="javax.swing.JPanel" name="searchGamePanel">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Rechercher/Emprunter un jeu ">
-                <Property name="tabTitle" type="java.lang.String" value="Rechercher/Emprunter un jeu "/>
+              <JTabbedPaneConstraints tabName="Rechercher des jeux">
+                <Property name="tabTitle" type="java.lang.String" value="Rechercher des jeux"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -416,11 +416,6 @@
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="541" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="borrowButton" min="-2" pref="362" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="272" max="-2" attributes="0"/>
-                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -457,9 +452,7 @@
                           <Component id="jScrollPane8" pref="0" max="32767" attributes="0"/>
                           <Component id="jScrollPane9" pref="280" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="borrowButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="162" max="32767" attributes="0"/>
+                      <EmptySpace pref="193" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -512,11 +505,6 @@
             <Component class="javax.swing.JLabel" name="jLabel5">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Avis laiss&#xe9;s"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="borrowButton">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Emprunter"/>
               </Properties>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane8">

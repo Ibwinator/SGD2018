@@ -13,9 +13,14 @@ import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Filters;
 import com.mongodb.Block;
+import com.mongodb.MapReduceCommand;
+import com.mongodb.MapReduceOutput;
+import com.mongodb.DB;
+import com.mongodb.DBObject;
 import static com.mongodb.client.model.Projections.*;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.DBCollection;
 
 import org.bson.conversions.Bson;
 import org.bson.Document;
@@ -38,6 +43,7 @@ import javax.swing.DefaultListModel;
  */
 public class InterfaceMongoDB {
     private MongoDatabase db;
+    private DB db2;
     
     public InterfaceMongoDB(){
         char[] pwd=new char[10];
@@ -46,6 +52,7 @@ public class InterfaceMongoDB {
        MongoCredential cred = MongoCredential.createCredential("sc364347","sc364347",pwd);
        MongoClient client=new MongoClient(new ServerAddress("127.0.0.1",27017),Arrays.asList(cred));
        db = client.getDatabase("sc364347");
+       db2 = client.getDB("sc364347");
     }
     
     public void test(){
@@ -213,6 +220,32 @@ public class InterfaceMongoDB {
             cursor.close();
         }
         return list;
+    }
+    
+    public String getMeanRating(String gameName){
+        DBCollection collection = db2.getCollection("avis");
+        String map="function(){"
+                +"if(this.Nomjeu ==  \""+gameName+"\"){" 
+                + "var value = { note : this.Note , count : 1};"
+                + "emit(this.collection,value);"
+                + "}"
+                + "}";
+        String reduce="function(collection,val){"
+                + "reduceValue = { note : 0 , count : 0 };"
+                + "for(var i = 0 ; i< val.length ;  i++ ){"
+                    + "reduceValue.note += val[i].note;"
+                    + "reduceValue.count += 1;"
+                + "}"
+                + "reduceValue.arg = reduceValue.note / reduceValue.count;"
+                + "return reduceValue.arg;"
+                + "}";
+        MapReduceCommand cmd = new MapReduceCommand(collection, map, reduce,
+                     null, MapReduceCommand.OutputType.INLINE, null);
+        MapReduceOutput out = collection.mapReduce(cmd);
+        for (DBObject o : out.results()) {
+	    return o.get("value").toString();
+	   }
+        return "";
     }
     
     public int connexion(String username,String mdp){

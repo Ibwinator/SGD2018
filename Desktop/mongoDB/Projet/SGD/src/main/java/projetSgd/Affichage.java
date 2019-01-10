@@ -127,7 +127,6 @@ public class Affichage extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        borrowButton = new javax.swing.JButton();
         jScrollPane8 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
         jScrollPane9 = new javax.swing.JScrollPane();
@@ -366,8 +365,6 @@ public class Affichage extends javax.swing.JFrame {
 
         jLabel5.setText("Avis laissés");
 
-        borrowButton.setText("Emprunter");
-
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -426,10 +423,6 @@ public class Affichage extends javax.swing.JFrame {
                 .addGap(253, 253, 253)
                 .addComponent(jLabel3)
                 .addContainerGap(541, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchGamePanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(borrowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(272, 272, 272))
         );
         searchGamePanelLayout.setVerticalGroup(
             searchGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -459,12 +452,10 @@ public class Affichage extends javax.swing.JFrame {
                 .addGroup(searchGamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(borrowButton)
-                .addContainerGap(162, Short.MAX_VALUE))
+                .addContainerGap(193, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("Rechercher/Emprunter un jeu ", searchGamePanel);
+        jTabbedPane2.addTab("Rechercher des jeux", searchGamePanel);
 
         jLabel6.setText("Laisser un avis");
 
@@ -774,7 +765,7 @@ public class Affichage extends javax.swing.JFrame {
     }//GEN-LAST:event_searchGameActionPerformed
 
     private void parseRatings(ArrayList<JSONObject> list,JTextArea ta){
-        ta.setText("");
+        //ta.setText("");
         for(JSONObject obj : list){
             String str="Avis du joueur : "+obj.get("Playername")+"\n";
             str+="Note : "+obj.get("Note")+"\n";
@@ -790,6 +781,7 @@ public class Affichage extends javax.swing.JFrame {
         if(i!=-1){
             String name=(String)model.getValueAt(i, 0);
             jTextArea1.setText(inter.getDescriptionGame(name));
+            ratingArea.setText("Note moyenne : "+inter.getMeanRating(name)+"\n\n");
             parseRatings(inter.getRating(name, "jeu"),ratingArea);
         }
         else{
@@ -802,6 +794,7 @@ public class Affichage extends javax.swing.JFrame {
         String name=nameRating.getText();
         String descri=ratingDescri.getText();
         String note=(String)comboNote.getSelectedItem();
+        
         if(!name.equals("") && !name.equals("Nom du jeu ou de la serie") && !descri.equals("")){
             if(radio1.isSelected()){
                 inter.insertRating("game", name, note, username, descri);
@@ -880,7 +873,6 @@ public class Affichage extends javax.swing.JFrame {
     private javax.swing.JButton addList;
     private javax.swing.JPanel addSerie;
     private javax.swing.JButton addSerieButton;
-    private javax.swing.JButton borrowButton;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> comboNote;
     private javax.swing.JTextField creationSerie;
