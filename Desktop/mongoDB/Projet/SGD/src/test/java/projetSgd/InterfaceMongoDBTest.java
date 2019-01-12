@@ -38,23 +38,23 @@ public class InterfaceMongoDBTest {
     @After
     public void tearDown() {
     }
-
+    //_
     /**
      * Test of test method, of class InterfaceMongoDB.
      */
-    @Test
+    /*@Test
     public void testTest() {
         System.out.println("test");
         InterfaceMongoDB instance = new InterfaceMongoDB();
         instance.test();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
+    }*/
 
     /**
      * Test of addGame method, of class InterfaceMongoDB.
      */
-    @Test
+    /*@Test
     public void testAddGame() {
         System.out.println("addGame");
         String name = "";
@@ -67,12 +67,12 @@ public class InterfaceMongoDBTest {
         instance.addGame(name, year, type, editor, serie, descri);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
+    }*/
 
     /**
      * Test of addSerie method, of class InterfaceMongoDB.
      */
-    @Test
+    /*@Test
     public void testAddSerie() {
         System.out.println("addSerie");
         String name = "";
@@ -83,12 +83,12 @@ public class InterfaceMongoDBTest {
         instance.addSerie(name, year, descri, gameList);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
+    }*/
 
     /**
      * Test of searchGame method, of class InterfaceMongoDB.
      */
-    @Test
+    /*@Test
     public void testSearchGame() {
         System.out.println("searchGame");
         String name = "";
@@ -102,12 +102,12 @@ public class InterfaceMongoDBTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
+    }*/
 
     /**
      * Test of getDescriptionGame method, of class InterfaceMongoDB.
      */
-    @Test
+    /*@Test
     public void testGetDescriptionGame() {
         System.out.println("getDescriptionGame");
         String name = "";
@@ -117,12 +117,12 @@ public class InterfaceMongoDBTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
+    }*/
 
     /**
      * Test of insertRating method, of class InterfaceMongoDB.
      */
-    @Test
+    /*@Test
     public void testInsertRating() {
         System.out.println("insertRating");
         String type = "";
@@ -134,12 +134,12 @@ public class InterfaceMongoDBTest {
         instance.insertRating(type, name, note, player, descri);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
+    }*/
 
     /**
      * Test of getRating method, of class InterfaceMongoDB.
      */
-    @Test
+    /*@Test
     public void testGetRating() {
         System.out.println("getRating");
         String name = "";
@@ -150,12 +150,12 @@ public class InterfaceMongoDBTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
+    }*/
 
     /**
      * Test of connexion method, of class InterfaceMongoDB.
      */
-    @Test
+    /*@Test
     public void testConnexion() {
         System.out.println("connexion");
         String username = "";
@@ -166,6 +166,6 @@ public class InterfaceMongoDBTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
+    }*/
     
 }

@@ -5,11 +5,13 @@
  */
 package projetSgd;
 import com.placeholder.PlaceHolder;
+import java.awt.Component;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
+import javax.swing.JPanel;
 import org.json.*;
 /**
  *
@@ -70,6 +72,28 @@ public class Affichage extends javax.swing.JFrame {
         listGameSerie.setModel(listModel);
     }
     
+    // Accesseur de récupération de l'attribut listModel 
+    public DefaultListModel getListModel(){
+        return listModel;
+    }
+    // Accesseur de récupération de jTabbedPane2 
+    public Component[] getJTabbedPane2(){
+        Component[] components = jTabbedPane2.getComponents();
+        return components;
+    }
+    // Accesseur de récupération de addGame 
+    public JPanel getAddGame(){        
+        return addGame;
+    }
+    // Accesseur de récupération de stats 
+    public JPanel getStats(){
+        return stats;
+    }
+    // Accesseur de récupération de addSerie 
+    public JPanel getAddSerie(){
+        return addSerie;
+    }
+    
     private void deleteGameField(){
         nameGame.setText("");
         yearGame.setText("");
@@ -85,7 +109,36 @@ public class Affichage extends javax.swing.JFrame {
         descriSerie.setText("");
         listModel = new DefaultListModel();
     }
-
+    
+    
+    //méthode de test
+    public void setYearGame(String s){
+        yearGame.setText(s);
+        //listModel.addElement("");
+    }
+    public void addGame(){
+        boolean okyear=false;
+        String name=nameGame.getText();
+        String year=yearGame.getText();
+        String type=typeGame.getText();
+        String editor=editorGame.getText();
+        String serie=serieGame.getText();
+        String descri=descriGame.getText();
+        try{
+            Integer.parseInt(year);
+            okyear=true;
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null,"Année incorrecte");
+            throw e;
+        }
+        if(okyear){
+            inter.addGame(name, year, type, editor, serie, descri);
+            deleteGameField();
+            JOptionPane.showMessageDialog(null,"Jeu ajouté");
+        }
+        
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -725,29 +778,11 @@ public class Affichage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addGameButtonActionPerformed
-        // TODO add your handling code here:
-        boolean okyear=false;
-        String name=nameGame.getText();
-        String year=yearGame.getText();
-        String type=typeGame.getText();
-        String editor=editorGame.getText();
-        String serie=serieGame.getText();
-        String descri=descriGame.getText();
-        try{
-            Integer.parseInt(year);
-            okyear=true;
-        }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(null,"Année incorrecte");
-        }
-        if(okyear){
-            inter.addGame(name, year, type, editor, serie, descri);
-            deleteGameField();
-            JOptionPane.showMessageDialog(null,"Jeu ajouté");
-        }
+        addGame();
         
     }//GEN-LAST:event_addGameButtonActionPerformed
     
-    private String[] toStringArray(DefaultListModel l){
+    public static String[] toStringArray(DefaultListModel l){
         String[] tab=new String[l.size()];
         for(int i=0;i<l.size();i++){
             tab[i]=(String)l.get(i);
@@ -755,25 +790,42 @@ public class Affichage extends javax.swing.JFrame {
         return tab;
     }
     
-    private void addListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addListActionPerformed
-        // TODO add your handling code here:
+    public void setGameSerie(String s){
+        addGameSerie.setText(s);
+    }
+    
+    public void addGameSerie(){
         String game=addGameSerie.getText();
         if(!game.equals("") && !game.equals("Jeu de la serie à ajouter à la liste")){
           listModel.addElement(game);
           addGameSerie.setText("");
         }
+        else
+            throw new IllegalArgumentException("GameSerie empty or forbidden GameSerie value");
+    }
+    
+    private void addListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addListActionPerformed
+        addGameSerie();
     }//GEN-LAST:event_addListActionPerformed
 
-    private void removeListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeListActionPerformed
-        // TODO add your handling code here:
+    public void removeFromGameList(){
         int pos=listGameSerie.getSelectedIndex();
         if(pos != -1){
             listModel.remove(pos);
         }
+    }
+    
+    private void removeListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeListActionPerformed
+        // TODO add your handling code here:
+        removeFromGameList();
     }//GEN-LAST:event_removeListActionPerformed
 
-    private void addSerieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSerieButtonActionPerformed
-        // TODO add your handling code here:
+    //méthode de test
+    public void setCreationSerie(String s){
+        creationSerie.setText(s);
+        listModel.addElement("");
+    }
+    public void addSerie(){
         int size=listModel.size();
         if(size>0){
             String name=serieName.getText();
@@ -786,11 +838,17 @@ public class Affichage extends javax.swing.JFrame {
                 deleteSerieField();
             }catch(NumberFormatException e){
                 JOptionPane.showMessageDialog(null,"Année incorrecte");
+                throw e; 
             }
         }
         else{
             JOptionPane.showMessageDialog(null,"Liste de jeux associée vide");
         }
+    }
+    
+    private void addSerieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSerieButtonActionPerformed
+        // TODO add your handling code here:
+        addSerie();
     }//GEN-LAST:event_addSerieButtonActionPerformed
 
     
