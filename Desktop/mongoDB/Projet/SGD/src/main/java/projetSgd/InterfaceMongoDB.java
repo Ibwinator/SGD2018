@@ -195,7 +195,24 @@ public class InterfaceMongoDB {
         
     }
     
-    
+    public ArrayList<JSONObject> searchUser(String name){
+        MongoCollection<Document> collection = db.getCollection("joueurs");
+        ArrayList<JSONObject> list=new ArrayList<JSONObject>();
+        Bson b=gt("idjoueur",0);
+        if(!name.equals("") && !name.equals("Nom de l'utilisateur")){
+            b=and(b,eq("Pseudo",name));
+        }
+        MongoCursor<Document> cursor=collection.find(b).iterator();
+        try{
+            while((cursor.hasNext())){
+                JSONObject obj=new JSONObject(cursor.next().toJson());
+                list.add(obj);
+            }
+        }finally{
+            cursor.close();
+        }
+        return list;
+    }
     
     public ArrayList<JSONObject> searchSerie(String name,String year,String game){
         MongoCollection<Document> collection = db.getCollection("series");
@@ -246,6 +263,88 @@ public class InterfaceMongoDB {
 	    return o.get("value").toString();
 	   }
         return "";
+    }
+    
+    public String getMeanUser(String Name){
+        DBCollection collection = db2.getCollection("avis");
+        String map="function(){"
+                +"if(this.Playername ==  \""+Name+"\"){" 
+                + "var value = { note : this.Note , count : 1};"
+                + "emit(this.collection,value);"
+                + "}"
+                + "}";
+        String reduce="function(collection,val){"
+                + "reduceValue = { note : 0 , count : 0 };"
+                + "for(var i = 0 ; i< val.length ;  i++ ){"
+                    + "reduceValue.note += val[i].note;"
+                    + "reduceValue.count += 1;"
+                + "}"
+                + "var moyenne = reduceValue.note / reduceValue.count;"
+                + "return moyenne;"
+                + "}";
+        MapReduceCommand cmd = new MapReduceCommand(collection, map, reduce,
+                     null, MapReduceCommand.OutputType.INLINE, null);
+        MapReduceOutput out = collection.mapReduce(cmd);
+        for (DBObject o : out.results()) {
+	    return o.get("value").toString();
+	   }
+        return "";
+    }
+    
+
+    
+    public String getMeanSerie(String Name){
+        DBCollection collection = db2.getCollection("avis");
+        String map="function(){"
+                +"if(this.Nomserie ==  \""+Name+"\"){" 
+                + "var value = { note : this.Note , count : 1};"
+                + "emit(this.collection,value);"
+                + "}"
+                + "}";
+        String reduce="function(collection,val){"
+                + "reduceValue = { note : 0 , count : 0 };"
+                + "for(var i = 0 ; i< val.length ;  i++ ){"
+                    + "reduceValue.note += val[i].note;"
+                    + "reduceValue.count += 1;"
+                + "}"
+                + "var moyenne = reduceValue.note / reduceValue.count;"
+                + "return moyenne;"
+                + "}";
+        MapReduceCommand cmd = new MapReduceCommand(collection, map, reduce,
+                     null, MapReduceCommand.OutputType.INLINE, null);
+        MapReduceOutput out = collection.mapReduce(cmd);
+        for (DBObject o : out.results()) {
+	    return o.get("value").toString();
+	   }
+        return "";
+    }
+    
+    public String[] getMaxMin(String name){
+        String[] tabres=new String[3];
+        tabres[0]="";
+        tabres[1]="";
+        tabres[2]="";
+        MongoCollection<Document> collection = db.getCollection("avis");
+        MongoCursor<Document> cursor = collection.aggregate(
+            Arrays.asList(
+                  Aggregates.match(eq("Playername",name)),
+                  Aggregates.group("$Playername", Accumulators.max("maxavis","$Note") ,Accumulators.min("minavis","$Note"),Accumulators.sum("count", 1) )
+            )     
+         ).iterator();
+        try{
+            while((cursor.hasNext())){
+                JSONObject obj=new JSONObject(cursor.next().toJson());
+                System.out.println(obj);
+                tabres[0]=String.valueOf(obj.get("maxavis"));
+                tabres[1]=String.valueOf(obj.get("minavis"));
+                tabres[2]=String.valueOf(obj.get("count"));
+            }
+        }finally{
+            cursor.close();
+        }
+        
+        return tabres;
+        
     }
     
     public int connexion(String username,String mdp){
