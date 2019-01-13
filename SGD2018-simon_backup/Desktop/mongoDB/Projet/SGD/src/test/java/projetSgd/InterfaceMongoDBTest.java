@@ -19,12 +19,14 @@ import static org.junit.Assert.*;
  * @author scotte
  */
 public class InterfaceMongoDBTest {
+    InterfaceMongoDB I;
     
     public InterfaceMongoDBTest() {
     }
     
     @BeforeClass
     public static void setUpClass() {
+    	I=new InterfaceMongoDB();
     }
     
     @AfterClass
@@ -38,6 +40,68 @@ public class InterfaceMongoDBTest {
     @After
     public void tearDown() {
     }
+    
+    @Test(expected = NumberFormatException.class)
+    public void testAddGameYear(){
+    	I.addGame("test1","test2","test3","test4","test5","test6");
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddGameArgument(){
+    	I.addGame("","","","","","");
+    }
+    @Test(expected = NumberFormatException.class)
+    public void testAddSerieYear(){
+    	I.addSerie("test1","test2","",new String[]{""});
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddSerieArgument(){
+    	I.addSerie("","","",new String[]{""});
+    }
+    @Test
+    public void testGetDescriptionGame(){
+    	String result=I.getDescriptionGame("");
+    	assertTrue(result.equals(""));
+    }
+    @Test(expected = NumberFormatException.class)
+    public void testInsertRating(){
+    	I.insertRating("","nom","test","player","");
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void testInsertRating(){
+    	I.insertRating("","","","","");
+    }
+    @Test
+    public void testGetSerieGame(){
+         ArrayList<JSONObject> list=I.getSerieGame("");
+         assertTrue(list.size()==0);
+    }
+    @Test
+    public void testgetMeanRating(){
+    	String result=I.getMeanRating("");
+    	assertTrue(result.equals(""));
+    }
+    @Test
+    public void testgetMeanUser(){
+    	String result=I.getMeanUser("");
+    	assertTrue(result.equals(""));
+    }
+    @Test
+    public void testgetMeanSerie(){
+    	String result=I.getMeanSerie("");
+    	assertTrue(result.equals(""));
+    }
+    @Test
+    public void testgetMaxMin(){
+    	String result[]=I.getMaxMin("");
+    	assertArrayEquals(result,new String[]{"","",""});
+    }
+    @Test
+    public void testConnexion(){
+    	String result=I.getMeanRating("");
+    	assertTrue(result.equals(""));
+    }
+    
+    
     //_
     /**
      * Test of test method, of class InterfaceMongoDB.

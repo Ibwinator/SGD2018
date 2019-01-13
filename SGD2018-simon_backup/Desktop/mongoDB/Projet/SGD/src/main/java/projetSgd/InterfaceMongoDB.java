@@ -68,28 +68,50 @@ public class InterfaceMongoDB {
     }
     
     public void addGame(String name,String year,String type,String editor,String serie,String descri){
-        MongoCollection<Document> collection = db.getCollection("jeux");
-        int num=(int)collection.count()+1;
-        Document doc = new Document("Numjeu", num)
-                .append("Nomjeu", name);
-        if(!serie.equals("Serie de jeu associée")&& !serie.equals("")){
-            doc.append("serie", serie);
+    	if(!name.replace(" ","").equals("") && !type.replace(" ","").equals("") && !editor.replace(" ","").equals("")){
+    		try{
+    			// test Year 
+    			Integer.parseInt(year);
+    			// fin test
+				MongoCollection<Document> collection = db.getCollection("jeux");
+				int num=(int)collection.count()+1;
+				Document doc = new Document("Numjeu", num)
+				        .append("Nomjeu", name);
+				if(!serie.equals("Serie de jeu associée")&& !serie.equals("")){
+				    doc.append("serie", serie);
+				}
+				doc.append("annéedesortie", Integer.parseInt(year))
+				        .append("types", type)
+				        .append("Editeur", editor)
+				        .append("descriptif", descri)
+				        .append("dispo","true");
+				collection.insertOne(doc);
+		    }catch(NumberFormatException e){
+		    	throw e;
+		    }
         }
-        doc.append("annéedesortie", Integer.parseInt(year))
-                .append("types", type)
-                .append("Editeur", editor)
-                .append("descriptif", descri)
-                .append("dispo","true");
-        collection.insertOne(doc);
+        else
+        	throw new IllegalArgumentException("missing field");
     }
     
      public void addSerie(String name,String year,String descri,String[] gameList){
-        MongoCollection<Document> collection = db.getCollection("series");
-        Document doc = new Document("Nom", name)
-                .append("Creation", Integer.parseInt(year))
-                .append("Description", descri)
-                .append("Jeux",Arrays.asList(gameList));
-        collection.insertOne(doc);
+     	if(!name.replace(" ","").equals("")){
+     		try{
+     			// test Year 
+    			Integer.parseInt(year);
+    			// fin test
+				MongoCollection<Document> collection = db.getCollection("series");
+				Document doc = new Document("Nom", name)
+				        .append("Creation", Integer.parseInt(year))
+				        .append("Description", descri)
+				        .append("Jeux",Arrays.asList(gameList));
+				collection.insertOne(doc);
+        	}catch(NumberFormatException e){
+        		throw e;
+        	}
+        }
+        else
+        	throw new IllegalArgumentException("missing field");
     }
      
     public ArrayList<JSONObject> searchGame(String name,String serie,String year,String type,String editor){
@@ -138,18 +160,28 @@ public class InterfaceMongoDB {
     }
     
     public void insertRating(String type,String name,String note,String player,String descri){
-        MongoCollection<Document> collection = db.getCollection("avis");
-        Document doc = new Document("Playername",player);
-        if(type.equals("serie")){
-            doc.append("Nomserie", name);
+    	if(!name.replace(" ","").equals("") && !player.replace(" ","").equals(""))){
+    		try{
+    			// test note
+    			Double.parseDouble(note);
+    			// fin test
+				MongoCollection<Document> collection = db.getCollection("avis");
+				Document doc = new Document("Playername",player);
+				if(type.equals("serie")){
+				    doc.append("Nomserie", name);
+				}
+				else{
+				    doc.append("Nomjeu",name);
+				}
+				doc.append("Note", Double.parseDouble(note))
+				   .append("Descriptif", descri);
+				collection.insertOne(doc);
+        	}catch(NumberFormatException e){
+        		throw e;
+        	}
         }
-        else{
-            doc.append("Nomjeu",name);
-        }
-        doc.append("Note", Double.parseDouble(note))
-           .append("Descriptif", descri);
-        collection.insertOne(doc);
-        
+        else
+        	throw new IllegalArgumentException("missing field")
     }
     
     public ArrayList<JSONObject> getRating(String name,String type){
