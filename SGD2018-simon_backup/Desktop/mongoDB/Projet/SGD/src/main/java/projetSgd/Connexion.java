@@ -96,7 +96,7 @@ public class Connexion extends javax.swing.JFrame {
         }
         else{
            JOptionPane.showMessageDialog(null,"Utilisateur ou mot de passe incorrect");
-           throw new Exception("Utilisateur ou mot de passe incorrect");
+           //throw new Exception("Utilisateur ou mot de passe incorrect");
         }
         
 	}

@@ -85,12 +85,12 @@ public class AffichageTest {
     	A.setYearSearch("test");
     	A.searchAGame();
     }
-    @Test(expected = IllegalArgumentException.class);
+    @Test(expected = IllegalArgumentException.class)
     public void testSendRating1(){
     	A.setWrongRatingField("","");
     	A.sendRatingAction();
     }
-    @Test(expected = IllegalArgumentException.class);
+    @Test(expected = IllegalArgumentException.class)
     public void testSendRating2(){
     	A.setWrongRatingField("Nom du jeu ou de la serie","oui");
     	A.sendRatingAction();

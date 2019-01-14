@@ -50,7 +50,7 @@ public class InterfaceMongoDB {
        String s="sc364347";
        pwd=s.toCharArray();
        MongoCredential cred = MongoCredential.createCredential("sc364347","sc364347",pwd);
-       MongoClient client=new MongoClient(new ServerAddress("127.0.0.1",27017),Arrays.asList(cred));
+       MongoClient client=new MongoClient(new ServerAddress("mongo",27017),Arrays.asList(cred));
        db = client.getDatabase("sc364347");
        db2 = client.getDB("sc364347");
     }
@@ -160,7 +160,7 @@ public class InterfaceMongoDB {
     }
     
     public void insertRating(String type,String name,String note,String player,String descri){
-    	if(!name.replace(" ","").equals("") && !player.replace(" ","").equals(""))){
+    	if(!name.replace(" ","").equals("") && !player.replace(" ","").equals("")){
     		try{
     			// test note
     			Double.parseDouble(note);
@@ -181,7 +181,7 @@ public class InterfaceMongoDB {
         	}
         }
         else
-        	throw new IllegalArgumentException("missing field")
+        	throw new IllegalArgumentException("missing field");
     }
     
     public ArrayList<JSONObject> getRating(String name,String type){

@@ -855,7 +855,7 @@ public class Affichage extends javax.swing.JFrame {
     }//GEN-LAST:event_addSerieButtonActionPerformed
 	
 	public void setYearSearch(String s){
-		yearSearch=s;
+		yearSearch.setText(s);
 	}
     public void searchAGame(){
         String name=nameSearch.getText();
