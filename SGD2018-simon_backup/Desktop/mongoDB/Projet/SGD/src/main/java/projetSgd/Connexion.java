@@ -85,9 +85,7 @@ public class Connexion extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void connexionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connexionButtonActionPerformed
-        // TODO add your handling code here:
+	public void connexion(){
         String user=username.getText();
         String pwd=String.valueOf(pwdField.getPassword());
         int type=inter.connexion(user, pwd);
@@ -98,8 +96,12 @@ public class Connexion extends javax.swing.JFrame {
         }
         else{
            JOptionPane.showMessageDialog(null,"Utilisateur ou mot de passe incorrect");
+           //throw new Exception("Utilisateur ou mot de passe incorrect");
         }
         
+	}
+    private void connexionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connexionButtonActionPerformed
+    	connexion();
     }//GEN-LAST:event_connexionButtonActionPerformed
 
     private void pwdFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pwdFieldFocusGained

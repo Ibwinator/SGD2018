@@ -808,11 +808,14 @@ public class Affichage extends javax.swing.JFrame {
         addGameSerie();
     }//GEN-LAST:event_addListActionPerformed
 
+	
     public void removeFromGameList(){
         int pos=listGameSerie.getSelectedIndex();
         if(pos != -1){
             listModel.remove(pos);
         }
+        else
+        	throw new ArrayIndexOutOfBoundsException("No GameSerie Selected");
     }
     
     private void removeListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeListActionPerformed
@@ -850,10 +853,11 @@ public class Affichage extends javax.swing.JFrame {
         // TODO add your handling code here:
         addSerie();
     }//GEN-LAST:event_addSerieButtonActionPerformed
-
-    
-    private void searchGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGameActionPerformed
-        // TODO add your handling code here:
+	
+	public void setYearSearch(String s){
+		yearSearch.setText(s);
+	}
+    public void searchAGame(){
         String name=nameSearch.getText();
         String year=yearSearch.getText();
         String serie=serieSearch.getText();
@@ -883,10 +887,11 @@ public class Affichage extends javax.swing.JFrame {
             
         }catch(NumberFormatException e){
             JOptionPane.showMessageDialog(null,"Année incorrecte");
+            throw e;
         }
-        
-        
-        
+    }
+    private void searchGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGameActionPerformed
+        searchAGame();
     }//GEN-LAST:event_searchGameActionPerformed
 
     private void parseRatings(ArrayList<JSONObject> list,JTextArea ta){
@@ -913,9 +918,11 @@ public class Affichage extends javax.swing.JFrame {
             jTextArea1.setText("");
         }
     }//GEN-LAST:event_jTable3MouseClicked
-
-    private void sendRatingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendRatingActionPerformed
-        // TODO add your handling code here:
+	public void setWrongRatingField(String n,String d){
+		nameRating.setText(n);
+		ratingDescri.setText(d);
+	}
+	public void sendRatingAction(){
         String name=nameRating.getText();
         String descri=ratingDescri.getText();
         String note=(String)comboNote.getSelectedItem();
@@ -932,7 +939,11 @@ public class Affichage extends javax.swing.JFrame {
         ratingDescri.setText(""); 
         }else{
             JOptionPane.showMessageDialog(null,"Champ vide");
+            throw new IllegalArgumentException("Champs Invalides");
         }
+	}
+    private void sendRatingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendRatingActionPerformed
+        sendRatingAction();
         
     }//GEN-LAST:event_sendRatingActionPerformed
 
@@ -940,8 +951,10 @@ public class Affichage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_gameSearchSerieActionPerformed
 
-    private void searchSerieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSerieButtonActionPerformed
-        // TODO add your handling code here:
+	public void setYearSearchSerie(String s){
+		yearSearchSerie.setText(s);
+	}
+	public void searchSerieAction(){
         String name=nameSearchSerie.getText();
         String year=yearSearchSerie.getText();
         String game=gameSearchSerie.getText();
@@ -962,13 +975,27 @@ public class Affichage extends javax.swing.JFrame {
                 }
         }catch(NumberFormatException e){
             JOptionPane.showMessageDialog(null,"Année de création incorrecte");
+            throw e;
         }
+	}
+    private void searchSerieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchSerieButtonActionPerformed
+    	searchSerieAction();
     }//GEN-LAST:event_searchSerieButtonActionPerformed
-    
+    public void testAddToGameListEmpty(){
+    	ArrayList<JSONObject> aljoe=new ArrayList<JSONObject>();
+    	addToGameList(aljoe);
+    }
     private void addToGameList(ArrayList<JSONObject> list){
         DefaultListModel dlm = new DefaultListModel();
         dlm.setSize(0);
-        descriSearchSerie.setText((String)list.get(0).get("Description"));
+        String inDescriSearchSerie=descriSearchSerie.getText();
+        try{
+        	inDescriSearchSerie=(String)list.get(0).get("Description");
+        }catch(IndexOutOfBoundsException e){
+        	e.printStackTrace();
+        	throw e;
+        }
+        descriSearchSerie.setText(inDescriSearchSerie);
         for (JSONObject obj : list){
             dlm.addElement(obj.get("Jeux"));
         }

@@ -80,6 +80,26 @@ public class AffichageTest {
         A.setGameSerie("Jeu de la serie à ajouter à la liste");
         A.addGameSerie();
     }
+    @Test(expected = NumberFormatException.class)
+    public void testSearchGame(){
+    	A.setYearSearch("test");
+    	A.searchAGame();
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void testSendRating1(){
+    	A.setWrongRatingField("","");
+    	A.sendRatingAction();
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void testSendRating2(){
+    	A.setWrongRatingField("Nom du jeu ou de la serie","oui");
+    	A.sendRatingAction();
+    }
+    @Test(expected = NumberFormatException.class)
+    public void testSearchSerie(){
+    	A.setYearSearchSerie("test");
+    	A.searchSerieAction();
+    }
     //_
     @Test
     public void testCreationGetListModel() {
